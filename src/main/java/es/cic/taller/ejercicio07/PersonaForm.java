@@ -38,7 +38,7 @@ public class PersonaForm extends FormLayout{
      }
      
      public void setPersona(Persona persona) {
-    	 nombre = " ";
+    	 binder.setBean(persona);
      }
      
      private Collection<Pais> getListaPaises(){

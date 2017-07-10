@@ -35,69 +35,22 @@ import com.vaadin.ui.VerticalLayout;
 public class MyUI extends UI {
 
 	private PersonaForm personaForm = new PersonaForm(this);
+	
     @Override
     protected void init(VaadinRequest vaadinRequest) {
         final VerticalLayout layout = new VerticalLayout();
-        
-        //Campo del nombre
-        final TextField tfNombre = new TextField();
-        tfNombre.setCaption("Nombre");
-        
-        //Campo del apellido
-        final TextField tfApellido = new TextField();
-        tfApellido.setCaption("Apellido");
-        
-        //Campo de la fecha
-        DateTimeField tfFecha = new DateTimeField();
-        tfFecha.setCaption("Fecha");
-        
-        //Lista de los paises
-        Collection<Pais> listaPaises = getListaPaises();
- 
-        ComboBox<Pais>  cPais= new ComboBox<>("Select your country", listaPaises);
- 
-        cPais.setPlaceholder("No country selected");
-        cPais.setItemCaptionGenerator(Pais::getNombreCompleto);
-        cPais.setEmptySelectionAllowed(false);
-        
-        //Boton final
-        Button button = new Button("Aceptar");
-        button.addClickListener( e -> {
-        	Persona p = new Persona();
-        	
-        	p.setNombre(tfNombre.getValue());
-        	p.setApellido(tfApellido.getValue());
-        	p.setFecha(tfFecha.getValue());
-        	p.setPais(cPais.getValue());
-        	
-            Notification.show(toString(p), Type.TRAY_NOTIFICATION);
-        });
-        
-        
-        Button button2 = new Button("Cambiar");
-        button2.addClickListener(e ->{
-        	button2.setVisible(!button2.isVisible());
-        });
-        
         
         Button button3 = new Button("Cambiar persona");
         button3.addClickListener(e ->{
         	Persona persona = leerDesdeBBDD();
         	
-        	tfNombre.setValue(persona.getNombre());
-        	tfApellido.setValue(persona.getApellido());
-        	tfFecha.setValue(persona.getFecha());
-        	cPais.setValue(persona.getPais());
-        	
         	personaForm.setPersona(persona);
+        	PersonaForm auxPerForm = new PersonaForm(this);
+        	
+        	layout.addComponents(auxPerForm);
         });
         
-        cPais.setPlaceholder("No has seleccionado pais");
-       // cPais.setItemCaptionGenerator(itemCaptionGenerator);
-        
-        
-        
-        layout.addComponents(tfNombre, tfApellido, tfFecha, cPais, button, button2);
+        layout.addComponents(button3, personaForm);
         
         setContent(layout);
     }
